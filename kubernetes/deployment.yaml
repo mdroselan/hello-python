@@ -1,32 +1,27 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-python-service
+  name: nodeportsvc
 spec:
   selector:
-    app: hello-python
+    app: test
   ports:
   - protocol: "TCP"
-    port: 6000
-    targetPort: 5000
-  type: LoadBalancer
+    port: 5000
+    targetPort: 32000
+  type: NodePort
 
 
 ---
-apiVersion: apps/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: hello-python
+  labels:
+    app: test
 spec:
-  replicas: 4
-  template:
-    metadata:
-      labels:
-        app: hello-python
-    spec:
-      containers:
-      - name: hello-python
-        image: hello-python:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5000
+  containers:
+    - name: roselan
+      image: roselan/test:latest
+      ports:
+        - containerPort:5000
